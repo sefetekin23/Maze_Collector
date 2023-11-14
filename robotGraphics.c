@@ -11,14 +11,22 @@ void setGrid()
             grid[i][j] = EMPTY;  //sets everything to be EMPTY at first
         }
     }
-    //sets all the markers
-    grid[0][4] = MARKER;
+    
+    
+}
+void setMarkers()
+{
     grid[3][9] = MARKER;
-    grid[5][2] = MARKER;
-    grid[7][1] = MARKER;
+    grid[5][0] = MARKER;
+    grid[3][3] = MARKER;
+    grid[7][3] = MARKER;
     grid[4][7] = MARKER;
     grid[9][8] = MARKER;
-    //sets all the blocks
+    grid[0][0] = MARKER;
+    
+}
+void setBlocks()
+{
     grid[1][5] = BLOCK;
     grid[3][2] = BLOCK;
     grid[7][4] = BLOCK;

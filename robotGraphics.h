@@ -10,7 +10,7 @@
 #define NORTH 4
 
 static const int gridSize = 50 ;  // length of sqaures's edges
-static const int waittime = 100 ; // wait between updates
+static const int waittime = 75 ; // wait between updates
 static const int screenSize = 500;
 static const int gridNumber = screenSize/gridSize; // calculating the number of grids
 int grid[gridNumber][gridNumber];
@@ -21,6 +21,8 @@ typedef struct Robot
 } Robot;
 
 void setGrid();
+void setMarkers();
+void setBlocks();
 void drawBackground();
 void pickUpMarkerVisual(Robot *robot);
 void update(Robot robot);
