@@ -4,10 +4,14 @@
 Robot is visualized as a man, markers are grocery bags, and home is a house.
 
 ## Description
-Robot doesn't have the knowledge of positions of any blocks or markers. It goes to the bottom-left corner of the grid and then, starts moving in each row to check for markers while also recording each movement in moves list.     
-If it comes across a marker, it picks up the marker, retracks its movements (also recording these in another list called backMoves) back to home using the recorded moves list in order to drop the marker.    
+Robot doesn't have the knowledge of positions of any blocks or markers. It goes to the bottom-left corner of the grid and then, starts moving in each row to check for markers while also recording each movement in moves list.
+
+If it comes across a marker, it picks up the marker, retracks its movements (also recording these in another list called backMoves) back to home using the recorded moves list in order to drop the marker.
+
 After dropping the marker, it retracks the movements back to where it came across the marker using the recorded back moves list, then empties the back moves list and continues to explore as well as recording moves to moves list.    
-If it comes across a block during any movement, it moves around the block. These moves aren't recorded in anytime.      
+
+If it comes across a block during any movement, it moves around the block. These moves aren't recorded in anytime.  
+    
 Markers are positined in a way that checkes all edge cases (while going to start point, just before and after a block, during block dodge, just before and after turning on sides, at the very last position). Positions of markers and blocks can be changed on robotGraphics.c file.
 
 Completed 6 out of 6 stages. 
