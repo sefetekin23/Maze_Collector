@@ -1,6 +1,5 @@
 #include "graphics.h"
 #include "robotGraphics.h"
-#include <stdlib.h>
 
 void setGrid()
 {
@@ -14,6 +13,7 @@ void setGrid()
     
     
 }
+
 void setMarkers() //grid[yValue][xValue]
 {
     grid[3][9] = MARKER;
@@ -25,6 +25,7 @@ void setMarkers() //grid[yValue][xValue]
     grid[0][0] = MARKER;
     
 }
+
 void setBlocks() //grid[yValue][xValue]
 {
     grid[2][9] = BLOCK;
@@ -34,6 +35,7 @@ void setBlocks() //grid[yValue][xValue]
     grid[5][8] = BLOCK;
     grid[9][7] = BLOCK;
 }
+
 void drawBackground()
 {
     setWindowSize(screenSize, screenSize);
