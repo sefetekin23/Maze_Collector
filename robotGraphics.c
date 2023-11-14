@@ -27,10 +27,12 @@ void setMarkers() //grid[yValue][xValue]
 }
 void setBlocks() //grid[yValue][xValue]
 {
+    grid[2][9] = BLOCK;
     grid[1][5] = BLOCK;
     grid[3][2] = BLOCK;
-    grid[7][4] = BLOCK;
+    grid[7][3] = BLOCK;
     grid[5][8] = BLOCK;
+    grid[9][7] = BLOCK;
 }
 void drawBackground()
 {

@@ -10,7 +10,7 @@
 #define NORTH 4
 
 static const int gridSize = 50 ;  // length of sqaures's edges
-static const int waittime = 75 ; // wait between updates
+static const int waittime = 60 ; // wait between updates
 static const int screenSize = 500;
 static const int gridNumber = screenSize/gridSize; // calculating the number of grids
 int grid[gridNumber][gridNumber];

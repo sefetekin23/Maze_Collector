@@ -10,7 +10,7 @@ After dropping the marker, it retracks the movements back to where it came acros
 If it comes across a block during any movement, it moves around the block. These moves aren't recorded in anytime.   
 Markers are positined in a way that checkes all edge cases (while going to start point, just before and after a block, during block dodge, just before and after turning on sides, at the very last position)
 
-Completed first 5 out of 6 stages.
+Completed 6 out of 6 stages. 
 
 ## Compile
 gcc -o fileName main.c graphics.c control.c robotGraphics.c 

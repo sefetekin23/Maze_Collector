@@ -1,3 +1,4 @@
+#include <string.h>
 #include "robotGraphics.h"
 
 int moves[200]; 
@@ -25,13 +26,15 @@ int atMarker(Robot robot)
 {
     return grid[robot.y][robot.x] == MARKER;
 }
-int goingOutGrid(Robot robot)
+
+int goingOutOfGrid(Robot robot)
 {
     return  (robot.x - 1 < 0 && robot.dir == WEST) ||
             (robot.y - 1 < 0 && robot.dir == NORTH) ||
             (robot.x + 1 >= gridNumber && robot.dir == EAST) ||
             (robot.y + 1 >= gridNumber && robot.dir == SOUTH);
 }
+
 int blockAhead(Robot robot)
 {
     switch (robot.dir)
@@ -49,14 +52,14 @@ int blockAhead(Robot robot)
     }
 }
 
-int atHome(Robot robot)
+int canMoveForward(Robot robot)
 {
-    return grid[robot.y][robot.x] == HOME;
+    return !blockAhead(robot) && !goingOutOfGrid(robot);
 }
 
 void forward(Robot *robot)
 {
-    if (!goingOutGrid(*robot) && !blockAhead(*robot))
+    if (canMoveForward(*robot))
     {
         switch (robot->dir)
         {
@@ -77,9 +80,19 @@ void forward(Robot *robot)
     update(*robot);
 }
 
+int atHome(Robot robot)
+{
+    return grid[robot.y][robot.x] == HOME;
+}
+
+int isCarryingAMarker(Robot robot)
+{
+    return robot.hasMarker;
+}
+
 void pickUpMarker(Robot *robot)
 {
-    if (robot->hasMarker == 0 && atMarker(*robot))
+    if ( !isCarryingAMarker(*robot) && atMarker(*robot))
     {
         grid[robot->y][robot->x] = EMPTY;
         robot->hasMarker = 1;
@@ -89,17 +102,19 @@ void pickUpMarker(Robot *robot)
 
 void dropMarker(Robot *robot)
 {
-    if (robot->hasMarker == 1 && atHome(*robot))
+    if (isCarryingAMarker(*robot) && atHome(*robot))
     {
         robot->hasMarker = 0;
         update(*robot);
     }
 }
+
 void recordMovement(Robot *robot)
 {
     moves[moveNumber] = robot->dir;
     moveNumber++;
 }
+
 void dodgeBlock(Robot *robot, int straight)
 {
     switch (robot->dir)
@@ -124,23 +139,36 @@ void dodgeBlock(Robot *robot, int straight)
         forward(robot);
         right(robot);
         break;
+    case NORTH:
+        left(robot);
+        if(canMoveForward(*robot))
+        {
+            forward(robot);
+            right(robot);
+            forward(robot);
+            left(robot);
+        }
+        else
+        {
+            right(robot);
+            right(robot);
+            forward(robot);
+            left(robot);
+            forward(robot);
+            right(robot);
+        }
+        break;
     default:
         break;
     }
 }
 
-int isCarryingAMarker(Robot robot)
-{
-    return robot.hasMarker;
-}
-
-
 void resetBackMovesList()
 {
-    for (int m = 0; m < backMoveNumber; m++)
-        backMoves[m] = 10;
-    backMoveNumber = 0;
+    memset(backMoves, -1, backMoveNumber); //deleting all backmoves to where it stopped 
+    backMoveNumber = 0; //so that they don't overlap with the future stopping points
 }
+
 void comingBackFromHome(Robot *robot)
 {
     for (int k = backMoveNumber - 1; k >= 0; k--) //itirates over backmovelist from the end to retrack all moves back to where it stopped
@@ -153,9 +181,10 @@ void comingBackFromHome(Robot *robot)
     resetBackMovesList();
     robot->dir = moves[moveNumber - 1]; // sets the robot's direction to the last direction when it stopped
 }
+
 void goHome(Robot *robot)
 {
-    for (int l = moveNumber - 1; l >= 0; l--) //itirates over movelist from the end to retrack all moves back to home
+    for (int l = moveNumber-1 ; l >= 0; l--) //itirates over movelist from the end to retrack all moves back to home
     {
         switch (moves[l])
         {
@@ -174,14 +203,14 @@ void goHome(Robot *robot)
         default:
             break;
         }
-        forward(robot);
         if (blockAhead(*robot))
-            dodgeBlock(robot, 0);
-        
+            dodgeBlock(robot, 1);
+        forward(robot);
         backMoves[backMoveNumber] = moves[l]; //stores the going back home moves 
         backMoveNumber++; //stores them in order to be able to continue searching from where he stopped
     }
 }
+
 void markerToHomeAndBack(Robot *robot)
 {
     pickUpMarker(robot);
@@ -189,12 +218,13 @@ void markerToHomeAndBack(Robot *robot)
     dropMarker(robot);
     comingBackFromHome(robot);
 }
+
 void checkMarker(Robot *robot)
 {
     if (atMarker(*robot))
         markerToHomeAndBack(robot);
-    
 }
+
 void checkBlock(Robot *robot)
 {
     if (blockAhead(*robot))
@@ -204,44 +234,56 @@ void checkBlock(Robot *robot)
             markerToHomeAndBack(robot);
     }
 }
-void turnOnSides(Robot *robot, int leftSide)
+
+void sideTurn(Robot *robot, int leftSide)
 {
     if (leftSide)
     {
         right(robot);
         recordMovement(robot);
-        forward(robot);
-        checkMarker(robot);
-        right(robot);
-        recordMovement(robot);
+        if (blockAhead(*robot))
+            dodgeBlock(robot,1);
+        else
+        {
+            forward(robot);
+            checkMarker(robot);
+            right(robot);
+            recordMovement(robot);
+        }
+        
     }
     else
     {
         left(robot);
         recordMovement(robot);
+        if (blockAhead(*robot))
+            dodgeBlock(robot,1);
+        else
+        {
         forward(robot);
         checkMarker(robot);
         left(robot);
         recordMovement(robot);
+        }
     }
 }
 
 void goToStart(Robot *robot)
 {
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 4; i++)
     {
-        while (!goingOutGrid(*robot))
+        while (canMoveForward(*robot))
         {
             recordMovement(robot);
             forward(robot);
             checkMarker(robot);
-            checkBlock(robot);
         }
-        right(robot);
+        if (i<2)
+            right(robot);
+        else
+            left(robot);
     }
-    right(robot);
 }
-
 
 void explore(Robot *robot)
 {
@@ -250,7 +292,7 @@ void explore(Robot *robot)
         for (int j = 0; j < 10; j++)
         {
             
-            if (!goingOutGrid(*robot))
+            if (!goingOutOfGrid(*robot))
             {
                 recordMovement(robot);
                 forward(robot);
@@ -259,8 +301,8 @@ void explore(Robot *robot)
             }
         }
         if (i % 2 == 1)
-            turnOnSides(robot,1);
+            sideTurn(robot,1);
         else
-            turnOnSides(robot,0);
+            sideTurn(robot,0);
     }
 }
