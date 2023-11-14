@@ -10,8 +10,6 @@ void setGrid()
             grid[i][j] = EMPTY;  //sets everything to be EMPTY at first
         }
     }
-    
-    
 }
 
 void setMarkers() //grid[yValue][xValue]
@@ -40,7 +38,8 @@ void drawBackground()
 {
     setWindowSize(screenSize, screenSize);
     background();
-    displayImage("images/background.jpeg", 0, 0);
+    setColour(cyan);
+    fillRect(0, 0, screenSize, screenSize);
     setColour(black);
     for (int y = 0; y < gridNumber; y++)
     {
@@ -87,7 +86,9 @@ void update(Robot robot)
 
 void pickUpMarkerVisual(Robot *robot)  //empties the square that the marker was
 {
-    drawBackground();
+    background();
+    setColour(cyan);
+    fillRect(robot->x * gridSize, robot->y * gridSize, gridSize, gridSize);
     setColour(black);
     drawRect(robot->x * gridSize, robot->y * gridSize, gridSize, gridSize);
     foreground();
