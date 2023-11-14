@@ -13,17 +13,17 @@ Markers are positined in a way that checkes all edge cases (while going to start
 Completed 6 out of 6 stages. 
 ## Compile & Run
 To Compile:
-'''bash
+```bash
 gcc -o fileName main.c graphics.c control.c robotGraphics.c
-'''      
+```      
 To Run with No Input: 
-'''bash
+```bash
 ./fileName | java -jar drawapp-3.0.jar
-'''     
+```     
 To Run with Home Position Input: 
-'''bash
+```bash
 ./fileName xValue yValue | java -jar drawapp-3.0.jar
-'''        
+```        
 
 While inputting the home position, avoid inputting the positions of markers or blocks and enter values in the range (0,9) inclusive to (0,9) inclusive.  
 Default marker positions are: (9,3) , (0,5) , (3,3) , (3,7) , (7,4) , (8,9) , (0,0)   
