@@ -32,18 +32,18 @@ int goingOutGrid(Robot robot)
             (robot.x + 1 >= gridNumber && robot.dir == EAST) ||
             (robot.y + 1 >= gridNumber && robot.dir == SOUTH);
 }
-int canMoveForward(Robot robot)
+int blockAhead(Robot robot)
 {
     switch (robot.dir)
     {
     case 1:
-        return grid[robot.y][robot.x + 1] != BLOCK;
+        return grid[robot.y][robot.x + 1] == BLOCK;
     case 2:
-        return grid[robot.y + 1][robot.x] != BLOCK;
+        return grid[robot.y + 1][robot.x] == BLOCK;
     case 3:
-        return grid[robot.y][robot.x - 1] != BLOCK;
+        return grid[robot.y][robot.x - 1] == BLOCK;
     case 4:
-        return grid[robot.y - 1][robot.x] != BLOCK;
+        return grid[robot.y - 1][robot.x] == BLOCK;
     default:
         return 0;
     }
@@ -56,7 +56,7 @@ int atHome(Robot robot)
 
 void forward(Robot *robot)
 {
-    if (!goingOutGrid(*robot) && canMoveForward(*robot))
+    if (!goingOutGrid(*robot) && !blockAhead(*robot))
     {
         switch (robot->dir)
         {
@@ -134,6 +134,7 @@ int isCarryingAMarker(Robot robot)
     return robot.hasMarker;
 }
 
+
 void resetBackMovesList()
 {
     for (int m = 0; m < backMoveNumber; m++)
@@ -145,7 +146,7 @@ void comingBackFromHome(Robot *robot)
     for (int k = backMoveNumber - 1; k >= 0; k--) //itirates over backmovelist from the end to retrack all moves back to where it stopped
     {
         robot->dir = backMoves[k];
-        if (!canMoveForward(*robot))
+        if (blockAhead(*robot))
             dodgeBlock(robot, 1);
         forward(robot);
     }
@@ -173,9 +174,10 @@ void goHome(Robot *robot)
         default:
             break;
         }
-        if (!canMoveForward(*robot))
-            dodgeBlock(robot, 0);
         forward(robot);
+        if (blockAhead(*robot))
+            dodgeBlock(robot, 0);
+        
         backMoves[backMoveNumber] = moves[l]; //stores the going back home moves 
         backMoveNumber++; //stores them in order to be able to continue searching from where he stopped
     }
@@ -187,23 +189,20 @@ void markerToHomeAndBack(Robot *robot)
     dropMarker(robot);
     comingBackFromHome(robot);
 }
-
-void goToStart(Robot *robot)
+void checkMarker(Robot *robot)
 {
-    for (int i = 0; i < 3; i++)
+    if (atMarker(*robot))
+        markerToHomeAndBack(robot);
+    
+}
+void checkBlock(Robot *robot)
+{
+    if (blockAhead(*robot))
     {
-        while (!goingOutGrid(*robot))
-        {
-            recordMovement(robot);
-            if (!canMoveForward(*robot))
-                dodgeBlock(robot, 1);
-            forward(robot);
-            if (atMarker(*robot))
-                markerToHomeAndBack(robot);
-        }
-        right(robot);
+        dodgeBlock(robot, 1);
+        if (atMarker(*robot))
+            markerToHomeAndBack(robot);
     }
-    right(robot);
 }
 void turnOnSides(Robot *robot, int leftSide)
 {
@@ -212,6 +211,7 @@ void turnOnSides(Robot *robot, int leftSide)
         right(robot);
         recordMovement(robot);
         forward(robot);
+        checkMarker(robot);
         right(robot);
         recordMovement(robot);
     }
@@ -220,10 +220,28 @@ void turnOnSides(Robot *robot, int leftSide)
         left(robot);
         recordMovement(robot);
         forward(robot);
+        checkMarker(robot);
         left(robot);
         recordMovement(robot);
     }
 }
+
+void goToStart(Robot *robot)
+{
+    for (int i = 0; i < 3; i++)
+    {
+        while (!goingOutGrid(*robot))
+        {
+            recordMovement(robot);
+            forward(robot);
+            checkMarker(robot);
+            checkBlock(robot);
+        }
+        right(robot);
+    }
+    right(robot);
+}
+
 
 void explore(Robot *robot)
 {
@@ -231,18 +249,13 @@ void explore(Robot *robot)
     {
         for (int j = 0; j < 10; j++)
         {
-            if (atMarker(*robot))
-                markerToHomeAndBack(robot);
-            else if (!goingOutGrid(*robot))
+            
+            if (!goingOutGrid(*robot))
             {
                 recordMovement(robot);
-                if (!canMoveForward(*robot))
-                {
-                    dodgeBlock(robot, 1);
-                    if (atMarker(*robot))
-                        markerToHomeAndBack(robot);
-                }
                 forward(robot);
+                checkMarker(robot);
+                checkBlock(robot);
             }
         }
         if (i % 2 == 1)
