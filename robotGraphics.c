@@ -38,7 +38,7 @@ void drawBackground()
 {
     setWindowSize(screenSize, screenSize);
     background();
-    setColour(cyan);
+    setColour(white);
     fillRect(0, 0, screenSize, screenSize);
     setColour(black);
     for (int y = 0; y < gridNumber; y++)
@@ -87,7 +87,7 @@ void update(Robot robot)
 void pickUpMarkerVisual(Robot *robot)  //empties the square that the marker was
 {
     background();
-    setColour(cyan);
+    setColour(white);
     fillRect(robot->x * gridSize, robot->y * gridSize, gridSize, gridSize);
     setColour(black);
     drawRect(robot->x * gridSize, robot->y * gridSize, gridSize, gridSize);
