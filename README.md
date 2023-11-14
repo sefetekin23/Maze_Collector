@@ -25,5 +25,5 @@ To Run with Home Position Input:
 ./fileName xValue yValue | java -jar drawapp-3.0.jar
 ```        
 While inputting the home position, avoid inputting the positions of markers or blocks and enter values in the range (0,9) inclusive to (0,9) inclusive.  
-Default marker positions are: (9,3) , (0,5) , (3,3) , (3,7) , (7,4) , (8,9) , (0,0)   
+Default marker positions are: (9,3) , (0,5) , (3,3) , (3,7) , (7,4) , (8,9) , (0,0)    
 Default block positions are: (9,2) , (5,1) , (2,3) , (3,7) , (8,5) , (7,9)
