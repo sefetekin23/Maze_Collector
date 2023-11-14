@@ -14,7 +14,7 @@ void setGrid()
     
     
 }
-void setMarkers()
+void setMarkers() //grid[yValue][xValue]
 {
     grid[3][9] = MARKER;
     grid[5][0] = MARKER;
@@ -25,7 +25,7 @@ void setMarkers()
     grid[0][0] = MARKER;
     
 }
-void setBlocks()
+void setBlocks() //grid[yValue][xValue]
 {
     grid[1][5] = BLOCK;
     grid[3][2] = BLOCK;
