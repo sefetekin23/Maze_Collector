@@ -23,4 +23,4 @@ gcc -o fileName main.c graphics.c control.c robotGraphics.c
 
 While inputting the home position, avoid inputting the positions of markers or blocks and enter values in the range (0,9) inclusive to (0,9) inclusive.  
 Marker positions are: (9,3) , (0,5) , (3,3) , (3,7) , (7,4) , (8,9) , (0,0)   
-Block positions are: (5,1) , (2,3) , (4,7) , (8,5) 
+Block positions are: (9,2) , (5,1) , (2,3) , (3,7) , (8,5) , (7,9)
