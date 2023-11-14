@@ -24,6 +24,6 @@ void setGrid();
 void setMarkers();
 void setBlocks();
 void drawBackground();
-void pickUpMarkerVisual(Robot *robot);
 void update(Robot robot);
+void pickUpMarkerVisual(Robot *robot);
 void finished();
