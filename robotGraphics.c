@@ -40,6 +40,7 @@ void drawBackground()
 {
     setWindowSize(screenSize, screenSize);
     background();
+    displayImage("images/background.jpeg", 0, 0);
     setColour(black);
     for (int y = 0; y < gridNumber; y++)
     {
@@ -86,9 +87,7 @@ void update(Robot robot)
 
 void pickUpMarkerVisual(Robot *robot)  //empties the square that the marker was
 {
-    background();
-    setColour(white);
-    fillRect(robot->x * gridSize, robot->y * gridSize, gridSize, gridSize);
+    drawBackground();
     setColour(black);
     drawRect(robot->x * gridSize, robot->y * gridSize, gridSize, gridSize);
     foreground();
