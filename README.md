@@ -13,15 +13,15 @@ Markers are positined in a way that checkes all edge cases (while going to start
 Completed 6 out of 6 stages. 
 ## Compile & Run
 To Compile:
-'''
+'''console
 gcc -o fileName main.c graphics.c control.c robotGraphics.c
 '''      
 To Run with No Input: 
-'''
+'''console
 ./fileName | java -jar drawapp-3.0.jar
 '''     
 To Run with Home Position Input: 
-'''
+'''console
 ./fileName xValue yValue | java -jar drawapp-3.0.jar
 '''        
 
