@@ -1,4 +1,4 @@
-# CCoursework
+# C 
 ## Description
 Robot doesn't have the knowledge of positions of any blocks or markers. It goes to the bottom-left corner of the grid and then, starts moving in each row to check for markers while also recording each movement in moves list.
 
